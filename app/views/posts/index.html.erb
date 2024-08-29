@@ -1,0 +1,9 @@
+<h1>Posts</h1>
+<% @posts.each do |post| %>
+  <p><%= post.title %></p>
+  <p><%= post.content %></p>
+<% end %>
+
+<% if user_signed_in? %>
+  <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
+<% end %>
