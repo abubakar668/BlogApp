@@ -1,8 +1,32 @@
 <h1>Posts</h1>
-<% @posts.each do |post| %>
-  <p><%= post.title %></p>
-  <p><%= post.content %></p>
-<% end %>
+
+<%= link_to 'Create New Post', new_post_path, class: 'btn btn-primary' %>
+
+<table>
+  <% @posts.each do |post| %>
+    <tr>
+      <td><%= post.title %></td>
+      <td><%= post.content %></td>
+      <td>Likes: <%= post.likes.count %></td>
+      <td>
+        <% if post.likes.find_by(user: current_user) %>
+          <%= link_to 'Unlike', post_like_path(post, post.likes.find_by(user: current_user)),
+                      method: :delete,
+                      class: 'btn btn-secondary' %>
+        <% else %>
+          <%= link_to 'Like', post_likes_path(post), method: :post, class: 'btn btn-primary' %>
+        <% end %>
+      </td>
+      <td><%= link_to 'Edit', edit_post_path(post), class: 'btn btn-warning' %></td>
+      <td>
+        <%= link_to 'Delete', post_path(post),
+                    method: :delete,
+                    data: { confirm: 'Are you sure?' },
+                    class: 'btn btn-danger' %>
+      </td>
+    </tr>
+  <% end %>
+</table>
 
 <% if user_signed_in? %>
   <%= link_to 'Logout', destroy_user_session_path, method: :delete, class: 'btn btn-danger' %>
